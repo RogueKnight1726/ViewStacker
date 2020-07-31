@@ -10,21 +10,31 @@ import UIKit
 
 class SwipableBaseView: BaseView{
     
-    var panGesture: UIScreenEdgePanGestureRecognizer!
+    var edgeSwipeGesture: UIScreenEdgePanGestureRecognizer!
     var state: ViewState!
     
     override func didMoveToWindow() {
         super.didMoveToWindow()
-        panGesture = UIScreenEdgePanGestureRecognizer.init(target: self, action: #selector(panDetected(sender:)))
-        panGesture.edges = .right
-        self.addGestureRecognizer(panGesture)
+        
+        
+        edgeSwipeGesture = UIScreenEdgePanGestureRecognizer.init(target: self, action: #selector(edgeSwipeDetected(sender:)))
+        edgeSwipeGesture.edges = .right
+        self.addGestureRecognizer(edgeSwipeGesture)
+        
     }
     
-    @objc func panDetected(sender: UIPanGestureRecognizer){
+
+    
+    @objc func edgeSwipeDetected(sender: UIPanGestureRecognizer){
         print("Recieving Gesture")
+        var dismissable = false
         if sender.translation(in: self).x < -100 {
-            self.state = .Dismissed
-            sender.state = .ended
+            dismissable = true
+        }
+        if sender.state == .ended{
+            if dismissable{
+                self.state = .Dismissed
+            }
         }
     }
 }
