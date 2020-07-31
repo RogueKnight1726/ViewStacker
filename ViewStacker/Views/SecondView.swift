@@ -9,19 +9,25 @@
 import UIKit
 
 
-class SecondView: UIView{
+class SecondView: SwipableBaseView{
     
-    let backgroundTemplate = BaseView.init(with: UIColor(red: 0.07, green: 0.10, blue: 0.13, alpha: 1.00), circular: false, shadow: false, borderColor: nil, borderThickness: nil)
+    weak var navigationDelegate: StackNavigationProtocol?
+    
+    override var state: ViewState!{
+        didSet{
+            navigationDelegate?.dismissCurrentView()
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.addSubview(backgroundTemplate)
-        backgroundTemplate.translatesAutoresizingMaskIntoConstraints = false
-        [backgroundTemplate.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0),
-         backgroundTemplate.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0),
-         backgroundTemplate.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-         backgroundTemplate.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)].forEach({ $0.isActive = true} )
+//        self.addSubview(backgroundTemplate)
+//        backgroundTemplate.translatesAutoresizingMaskIntoConstraints = false
+//        [backgroundTemplate.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0),
+//         backgroundTemplate.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0),
+//         backgroundTemplate.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
+//         backgroundTemplate.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)].forEach({ $0.isActive = true} )
     }
     
     required init?(coder: NSCoder) {
@@ -33,8 +39,14 @@ class SecondView: UIView{
 
 
 
-extension SecondView: StackTravesalDelegate{
+extension SecondView: StackViewDimensionProtocol{
+    
+    
+    
     func heightOfHeaderView() -> CGFloat {
         return 50
     }
+    
+    
+    
 }

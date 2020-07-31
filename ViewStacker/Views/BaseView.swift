@@ -19,7 +19,7 @@ class BaseView: UIView{
     var borderThickness: CGFloat?
     
     
-    convenience init(with backgroundTheme: UIColor, circular: Bool, shadow: Bool,borderColor: UIColor?,borderThickness: Int?){
+    public convenience init(with backgroundTheme: UIColor, circular: Bool, shadow: Bool,borderColor: UIColor?,borderThickness: Int?){
         self.init()
         shapeColor = backgroundTheme
         self.circular = circular

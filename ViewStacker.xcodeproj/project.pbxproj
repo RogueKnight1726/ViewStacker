@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		583B269324D45466004AA196 /* StackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583B269224D45466004AA196 /* StackManager.swift */; };
+		583B269524D46F0D004AA196 /* SwipableBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583B269424D46F0D004AA196 /* SwipableBaseView.swift */; };
 		58BFB84024D441E9001DE405 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BFB83F24D441E9001DE405 /* AppDelegate.swift */; };
 		58BFB84224D441E9001DE405 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BFB84124D441E9001DE405 /* SceneDelegate.swift */; };
 		58BFB84724D441E9001DE405 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58BFB84524D441E9001DE405 /* Main.storyboard */; };
@@ -39,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		583B269224D45466004AA196 /* StackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackManager.swift; sourceTree = "<group>"; };
+		583B269424D46F0D004AA196 /* SwipableBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipableBaseView.swift; sourceTree = "<group>"; };
 		58BFB83C24D441E9001DE405 /* ViewStacker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ViewStacker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		58BFB83F24D441E9001DE405 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		58BFB84124D441E9001DE405 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -109,6 +113,7 @@
 			children = (
 				58BFB83F24D441E9001DE405 /* AppDelegate.swift */,
 				58BFB84124D441E9001DE405 /* SceneDelegate.swift */,
+				583B269224D45466004AA196 /* StackManager.swift */,
 				58BFB86F24D44206001DE405 /* Views */,
 				58BFB87024D4420E001DE405 /* Controllers */,
 				58BFB84524D441E9001DE405 /* Main.storyboard */,
@@ -143,6 +148,7 @@
 				58BFB87524D445AD001DE405 /* FirstView.swift */,
 				58BFB87924D44B50001DE405 /* SecondView.swift */,
 				58BFB87724D446EB001DE405 /* BaseView.swift */,
+				583B269424D46F0D004AA196 /* SwipableBaseView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -293,7 +299,9 @@
 				58BFB84024D441E9001DE405 /* AppDelegate.swift in Sources */,
 				58BFB87824D446EB001DE405 /* BaseView.swift in Sources */,
 				58BFB84224D441E9001DE405 /* SceneDelegate.swift in Sources */,
+				583B269324D45466004AA196 /* StackManager.swift in Sources */,
 				58BFB87224D44222001DE405 /* HomeController.swift in Sources */,
+				583B269524D46F0D004AA196 /* SwipableBaseView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

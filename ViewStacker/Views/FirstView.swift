@@ -9,19 +9,40 @@
 import UIKit
 
 
-class FirstView: UIView{
+class FirstView: SwipableBaseView{
     
-    let backgroundTemplate = BaseView.init(with: UIColor(red: 0.07, green: 0.10, blue: 0.13, alpha: 1.00), circular: false, shadow: false, borderColor: nil, borderThickness: nil)
+    weak var navigationDelegate: StackNavigationProtocol?
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.addSubview(backgroundTemplate)
-        backgroundTemplate.translatesAutoresizingMaskIntoConstraints = false
-        [backgroundTemplate.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0),
-         backgroundTemplate.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0),
-         backgroundTemplate.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-         backgroundTemplate.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)].forEach({ $0.isActive = true} )
+//        self.addSubview(backgroundTemplate)
+//        backgroundTemplate.translatesAutoresizingMaskIntoConstraints = false
+//        [backgroundTemplate.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0),
+//         backgroundTemplate.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0),
+//         backgroundTemplate.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
+//         backgroundTemplate.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)].forEach({ $0.isActive = true} )
+        let label = UILabel()
+        self.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        [label.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30),
+         label.topAnchor.constraint(equalTo: self.topAnchor, constant: 30)].forEach({$0.isActive = true})
+        label.text = "Hello World"
+        
+        let proceedButton = UIButton.init()
+        self.addSubview(proceedButton)
+        proceedButton.translatesAutoresizingMaskIntoConstraints = false
+        [proceedButton.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
+         proceedButton.bottomAnchor.constraint(equalTo: self.centerYAnchor, constant: 0)].forEach({$0.isActive = true})
+        proceedButton.addTarget(self, action: #selector(proceedToDetail(sender:)), for: .touchUpInside)
+        proceedButton.setTitle("Proceed", for: .normal)
+        
+    }
+    
+    
+    @objc func proceedToDetail(sender: UIButton){
+        navigationDelegate?.moveForward(with: 1)
     }
     
     required init?(coder: NSCoder) {
@@ -35,6 +56,8 @@ class FirstView: UIView{
 
 extension FirstView: StackViewDimensionProtocol{
     func heightOfHeaderView() -> CGFloat {
-        return 50
+        return 100
     }
+    
+    
 }
