@@ -23,20 +23,35 @@ class HomeController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let guide = view.safeAreaLayoutGuide
         arrayOfScenes = [productView,detailView,actionView]
         stackManager.initiateGestureRecogniser()
         stackManager.arrayOfViews = arrayOfScenes
         stackManager.addDismissGestureToAllViews()
+        stackManager.guide = guide
         
+        let button = UIButton.init()
+        button.setTitle("Start", for: .normal)
+        view.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        [button.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0),
+         button.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: 0)].forEach({$0.isActive = true})
+        button.addTarget(self, action: #selector(showStackViews(sender:)), for: .touchUpInside)
+        
+        
+        
+    }
+    
+    
+    @objc func showStackViews(sender: UIButton){
         let guide = view.safeAreaLayoutGuide
-        
         
         view.addSubview(productView)
         productView.translatesAutoresizingMaskIntoConstraints = false
         [productView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
-         productView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
-         productView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-         productView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 20)].forEach({$0.isActive = true})
+        productView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
+        productView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+        productView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 20)].forEach({$0.isActive = true})
         productView.navigationDelegate = stackManager
         
         view.addSubview(detailView)
