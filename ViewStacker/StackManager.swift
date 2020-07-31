@@ -42,6 +42,12 @@ public class StackManager: UIView{
             }
         }
     }
+    
+    func performInitialAnimation(){
+        UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
+            self.arrayOfViews[0].transform = CGAffineTransform.init(translationX: 0, y: -self.guide.layoutFrame.height)
+        }, completion: nil)
+    }
 }
 
 protocol StackViewDimensionProtocol: UIView{
@@ -78,6 +84,7 @@ extension StackManager: StackNavigationProtocol{
             self!.arrayOfViews[self!.currentScene + 1].transform = CGAffineTransform.init(translationX: 0, y: -(self!.guide.layoutFrame.height - heightOffest))
         }, completion: nil)
         if currentScene <= arrayOfViews.count{
+            
             currentScene += 1
             arrayOfViews[currentScene].addGestureRecognizer(edgeSwipeGesture)
         }

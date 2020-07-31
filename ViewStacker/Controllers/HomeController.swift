@@ -50,8 +50,8 @@ class HomeController: UIViewController{
         productView.translatesAutoresizingMaskIntoConstraints = false
         [productView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
         productView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
-        productView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-        productView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 20)].forEach({$0.isActive = true})
+        productView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 0),
+        productView.topAnchor.constraint(equalTo: guide.bottomAnchor, constant: 0)].forEach({$0.isActive = true})
         productView.navigationDelegate = stackManager
         
         view.addSubview(detailView)
@@ -70,6 +70,8 @@ class HomeController: UIViewController{
         actionView.topAnchor.constraint(equalTo: guide.bottomAnchor, constant: 0),
         actionView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 0)].forEach({$0.isActive = true})
         actionView.navigationDelegate = stackManager
+        
+        stackManager.performInitialAnimation()
     }
 }
 
