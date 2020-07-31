@@ -33,7 +33,7 @@ class FirstView: UIView{
 
 
 
-extension FirstView: StackTravesalDelegate{
+extension FirstView: StackViewDimensionProtocol{
     func heightOfHeaderView() -> CGFloat {
         return 50
     }
