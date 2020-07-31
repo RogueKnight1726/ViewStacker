@@ -9,12 +9,13 @@
 import UIKit
 
 
-class SecondView: SwipableBaseView{
+class SecondView: BaseView{
     
     weak var navigationDelegate: StackNavigationProtocol?
     
-    override var state: ViewState!{
+    public var currentState: ViewState!{
         didSet{
+            print("New Value Set")
             navigationDelegate?.dismissCurrentView()
         }
     }
@@ -45,7 +46,14 @@ class SecondView: SwipableBaseView{
 
 
 extension SecondView: StackViewDimensionProtocol{
-    
+    var state: ViewState {
+        get {
+            return currentState
+        }
+        set {
+            self.currentState = newValue
+        }
+    }
     
     
     func heightOfHeaderView() -> CGFloat {

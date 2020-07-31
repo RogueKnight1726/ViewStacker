@@ -9,10 +9,14 @@
 import UIKit
 
 
-class FirstView: SwipableBaseView{
+class FirstView: BaseView{
     
     weak var navigationDelegate: StackNavigationProtocol?
-    
+    public var currentState: ViewState!{
+        didSet{
+            navigationDelegate?.dismissCurrentView()
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -52,12 +56,21 @@ class FirstView: SwipableBaseView{
     
 }
 
-
-
 extension FirstView: StackViewDimensionProtocol{
-    func heightOfHeaderView() -> CGFloat {
-        return 100
+    
+    var state: ViewState {
+        get {
+            return currentState
+        }
+        set {
+            self.currentState = newValue
+        }
     }
     
     
+    
+    func heightOfHeaderView() -> CGFloat {
+        return 100
+    }
 }
+

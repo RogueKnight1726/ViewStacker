@@ -17,6 +17,7 @@ class BaseView: UIView{
     var shadowLayer = CAShapeLayer()
     var borderColor: CGColor?
     var borderThickness: CGFloat?
+//    var state: ViewState!
     
     
     public convenience init(with backgroundTheme: UIColor, circular: Bool, shadow: Bool,borderColor: UIColor?,borderThickness: Int?){

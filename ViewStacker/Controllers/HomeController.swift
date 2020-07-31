@@ -17,10 +17,16 @@ class HomeController: UIViewController{
     var arrayOfScenes: [StackViewDimensionProtocol]!
     var currentScene = 0
     
+    var stackManager = StackManager()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         arrayOfScenes = [productView,detailView,actionView]
+        stackManager.initiateGestureRecogniser()
+        stackManager.arrayOfViews = arrayOfScenes
+        stackManager.addDismissGestureToAllViews()
         
         let guide = view.safeAreaLayoutGuide
         
@@ -31,7 +37,7 @@ class HomeController: UIViewController{
          productView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
          productView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
          productView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 20)].forEach({$0.isActive = true})
-        productView.navigationDelegate = self
+        productView.navigationDelegate = stackManager
         
         view.addSubview(detailView)
         detailView.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +45,7 @@ class HomeController: UIViewController{
         detailView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
         detailView.topAnchor.constraint(equalTo: guide.bottomAnchor, constant: 0),
         detailView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 0)].forEach({$0.isActive = true})
-        detailView.navigationDelegate = self
+        detailView.navigationDelegate = stackManager
         
         
         view.addSubview(actionView)
@@ -48,52 +54,52 @@ class HomeController: UIViewController{
         actionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
         actionView.topAnchor.constraint(equalTo: guide.bottomAnchor, constant: 0),
         actionView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 0)].forEach({$0.isActive = true})
-        actionView.navigationDelegate = self
+        actionView.navigationDelegate = stackManager
     }
 }
 
 
-extension HomeController: StackNavigationProtocol{
-    func moveForward(with dataSet: Any?) {
-        
-        switch currentScene{
-        case 0:
-            UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: { [weak self] in
-                guard let _ = self else { return }
-                let guide = self!.view.safeAreaLayoutGuide
-                self!.detailView.transform = CGAffineTransform.init(translationX: 0, y: -(guide.layoutFrame.size.height - self!.productView.heightOfHeaderView()))
-            }, completion: nil)
-            break
-        case 1:
-            UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: { [weak self] in
-                guard let _ = self else { return }
-                let guide = self!.view.safeAreaLayoutGuide
-                var offsetValue: CGFloat! = 0
-                for i in 0...self!.currentScene{
-                    offsetValue = offsetValue + self!.arrayOfScenes[i].heightOfHeaderView()
-                }
-                self!.actionView.transform = CGAffineTransform.init(translationX: 0, y: -(guide.layoutFrame.size.height - offsetValue))
-            }, completion: nil)
-            break
-        case 3:
-            break
-        default:
-            break
-        }
-        currentScene += 1
-    }
-    
-    func dismissCurrentView() {
-        UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: { [weak self] in
-            guard let _ = self else { return }
-            self!.arrayOfScenes[self!.currentScene].transform = .identity
-        }, completion: nil)
-        
-        currentScene -= 1
-    }
-    
-    
-}
+//extension HomeController: StackNavigationProtocol{
+//    func moveForward(with dataSet: Any?) {
+//        
+//        switch currentScene{
+//        case 0:
+//            UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: { [weak self] in
+//                guard let _ = self else { return }
+//                let guide = self!.view.safeAreaLayoutGuide
+//                self!.detailView.transform = CGAffineTransform.init(translationX: 0, y: -(guide.layoutFrame.size.height - self!.productView.heightOfHeaderView()))
+//            }, completion: nil)
+//            break
+//        case 1:
+//            UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: { [weak self] in
+//                guard let _ = self else { return }
+//                let guide = self!.view.safeAreaLayoutGuide
+//                var offsetValue: CGFloat! = 0
+//                for i in 0...self!.currentScene{
+//                    offsetValue = offsetValue + self!.arrayOfScenes[i].heightOfHeaderView()
+//                }
+//                self!.actionView.transform = CGAffineTransform.init(translationX: 0, y: -(guide.layoutFrame.size.height - offsetValue))
+//            }, completion: nil)
+//            break
+//        case 3:
+//            break
+//        default:
+//            break
+//        }
+//        currentScene += 1
+//    }
+//    
+//    func dismissCurrentView() {
+//        UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: { [weak self] in
+//            guard let _ = self else { return }
+//            self!.arrayOfScenes[self!.currentScene].transform = .identity
+//        }, completion: nil)
+//        
+//        currentScene -= 1
+//    }
+//    
+//    
+//}
 
 
 
