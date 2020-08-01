@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StacksManager
 
 class HomeController: UIViewController{
     
