@@ -12,22 +12,66 @@ import UIKit
 public class StackManager: UIView{
     
     var edgeSwipeGesture: UIScreenEdgePanGestureRecognizer!
-    var arrayOfViews: [StackViewDimensionProtocol]!
+    var arrayOfViews: [StackViewDimensionProtocol]!{
+        didSet{
+            initiateGestureRecogniser()
+        }
+    }
     var currentScene = 0
     var guide: UILayoutGuide!
+    
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    convenience init(frame: CGRect,viewStack: [StackViewDimensionProtocol],guide: UILayoutGuide) {
+        self.init()
+        self.frame = frame
+        self.guide = guide
+        self.arrayOfViews = viewStack
+        initViews()
+        initiateGestureRecogniser()
+    }
+    
+    func initViews(){
+        
+        
+        for item in arrayOfViews{
+            self.addSubview(item)
+            item.translatesAutoresizingMaskIntoConstraints = false
+            [item.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 0),
+            item.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: 0),
+            item.heightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, constant: 0),
+            item.topAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)].forEach({$0.isActive = true})
+            item.navigationDelegate = self
+        }
+        
+        UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: { [weak self] in
+            self?.arrayOfViews[0].transform = CGAffineTransform.init(translationX: 0, y: -(self?.guide.layoutFrame.height ?? 0))
+        }, completion: nil)
+        
+        
+    }
+    
+    
     
     func initiateGestureRecogniser(){
         edgeSwipeGesture = UIScreenEdgePanGestureRecognizer.init(target: self, action: #selector(edgeSwipeDetected(sender:)))
         edgeSwipeGesture.edges = .right
-        
-    }
-    
-    func addDismissGestureToAllViews(){
         arrayOfViews[currentScene].addGestureRecognizer(edgeSwipeGesture)
     }
     
+    
     public override func removeFromSuperview() {
         super.removeFromSuperview()
+    }
+    
+    deinit {
+        print("StackManager deinit called")
     }
     
     @objc func edgeSwipeDetected(sender: UIPanGestureRecognizer){
@@ -52,6 +96,7 @@ public class StackManager: UIView{
 
 protocol StackViewDimensionProtocol: UIView{
     var state: ViewState { get set }
+    var navigationDelegate: StackNavigationProtocol? { get set }
     func heightOfHeaderView() -> CGFloat
 //    func heightOfView() -> CGFloat
 }
@@ -91,17 +136,23 @@ extension StackManager: StackNavigationProtocol{
     }
     
     func dismissCurrentView() {
+        
         UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: { [weak self] in
             guard let _ = self else { return }
             self!.arrayOfViews[self!.currentScene].transform  = .identity
-        }, completion: nil)
-        
-        if currentScene > 0{
-            currentScene -= 1
-            arrayOfViews[currentScene].addGestureRecognizer(edgeSwipeGesture)
-        } else{
-            arrayOfViews[currentScene].removeFromSuperview()
+        }) { [weak self] (_) in
+            guard let _ = self else { return }
+            if self!.currentScene > 0{
+                self!.currentScene -= 1
+                self!.arrayOfViews[self!.currentScene].addGestureRecognizer(self!.edgeSwipeGesture)
+            } else{
+                
+                self!.arrayOfViews[self!.currentScene].removeFromSuperview()
+                self!.removeFromSuperview()
+            }
         }
+        
+        
     }
     
     
