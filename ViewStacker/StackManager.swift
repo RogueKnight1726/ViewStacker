@@ -12,6 +12,8 @@ import UIKit
 public class StackManager: UIView{
     
     var edgeSwipeGesture: UIScreenEdgePanGestureRecognizer!
+    var dismissTapGesture: UITapGestureRecognizer!
+    
     var arrayOfViews: [StackViewDimensionProtocol]!{
         didSet{
             initiateGestureRecogniser()
@@ -63,6 +65,29 @@ public class StackManager: UIView{
         edgeSwipeGesture = UIScreenEdgePanGestureRecognizer.init(target: self, action: #selector(edgeSwipeDetected(sender:)))
         edgeSwipeGesture.edges = .right
         arrayOfViews[currentScene].addGestureRecognizer(edgeSwipeGesture)
+        
+        dismissTapGesture = UITapGestureRecognizer.init(target: self, action: #selector(dismissPresentedViews(sender:)))
+        self.addGestureRecognizer(dismissTapGesture)
+    }
+    
+    @objc func dismissPresentedViews(sender: UITapGestureRecognizer){
+        print("Tap Detected")
+        
+        let location = sender.location(in: self)
+        if arrayOfViews[1].frame.contains(location){
+            print("Tapped on second view")
+        }
+        
+        for view in arrayOfViews.reversed(){
+            if view.frame.contains(location){
+                guard let index = arrayOfViews.firstIndex(where: { $0 === view }) else { return }
+                if index != currentScene{
+                    view.state = .Dismissed
+                }
+                return
+            }
+        }
+        
     }
     
     
