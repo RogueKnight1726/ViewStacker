@@ -15,7 +15,19 @@ class ThirdView: BaseView{
     
     public var currentState: ViewState!{
         didSet{
-//            navigationDelegate?.dismissCurrentView()
+            switch currentState {
+            case .Dismissed:
+                navigationDelegate?.dismissCurrentView()
+                break
+            case .Visible:
+                navigationDelegate?.moveForward()
+                break
+            case .FullScreen:
+                break
+            default:
+                break
+            }
+            
         }
     }
     
@@ -34,6 +46,14 @@ class ThirdView: BaseView{
 
 
 extension ThirdView: StackViewDimensionProtocol{
+    func recieveIncomingData(value: Any?) {
+        print("Recieved Data in Third View: \(value)")
+    }
+    
+    func sendDataToNextView() -> Any? {
+        return nil
+    }
+    
     
     var state: ViewState {
         get {
@@ -41,7 +61,7 @@ extension ThirdView: StackViewDimensionProtocol{
         }
         set {
             self.currentState = newValue
-            navigationDelegate?.dismissCurrentView()
+//            navigationDelegate?.dismissCurrentView()
         }
     }
     
