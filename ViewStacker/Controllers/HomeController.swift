@@ -12,7 +12,7 @@ import StacksManager
 class HomeController: UIViewController{
     
     let productView = FirstView.init(with: UIColor(red: 0.07, green: 0.10, blue: 0.13, alpha: 1.00), circular: false, shadow: false, borderColor: nil, borderThickness: nil)
-    let detailView = SecondView.init(with: UIColor(red: 0.09, green: 0.13, blue: 0.17, alpha: 1.00), circular: false, shadow: false, borderColor: nil, borderThickness: nil)
+    let detailView = SecondView.init(with: UIColor(red: 1.00, green: 0.20, blue: 0.40, alpha: 1.00), circular: false, shadow: false, borderColor: nil, borderThickness: nil)
     let actionView = ThirdView.init(with: UIColor(red: 0.11, green: 0.15, blue: 0.19, alpha: 1.00), circular: false, shadow: false, borderColor: nil, borderThickness: nil)
     
     
@@ -26,7 +26,7 @@ class HomeController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        arrayOfScenes = [productView,detailView,actionView,auxilOneView,auclTwoView]
+        arrayOfScenes = [productView,detailView,actionView]
         
         let button = UIButton.init()
         button.setTitle("Start", for: .normal)
@@ -37,14 +37,31 @@ class HomeController: UIViewController{
         button.addTarget(self, action: #selector(showStackViews(sender:)), for: .touchUpInside)
         
         
-        
+        initViews()
     }
+    
+    
+    
+    
     
     
     @objc func showStackViews(sender: UIButton){
         let guide = view.safeAreaLayoutGuide
         stackManager = StackManager.init(frame: self.view.frame, viewStack: arrayOfScenes, guide: guide)
         self.view.addSubview(stackManager)
+        
+    }
+}
+
+
+
+
+
+extension HomeController{
+    
+    func initViews(){
+        
+        view.backgroundColor = AppTheme.APP_BACKGROUNDCOLOR
         
     }
 }

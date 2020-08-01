@@ -19,21 +19,87 @@ class FirstView: BaseView{
         }
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    
+    
+    
+    //App related properties
+    var dialContainerView: BaseView!
+    var progressDialView: CircularProgressView!
+    let progressTrackColor = UIColor(red: 1.00, green: 0.92, blue: 0.88, alpha: 1.00)
+    let progressFillColor = UIColor(red: 0.88, green: 0.58, blue: 0.45, alpha: 1.00)
+    var panGesture: UIPanGestureRecognizer!
+    var panActive = false
+//    private var currentRotation: Rotation = .none
+//    var circularShape = CAShapeLayer()
+//    var circularPath: UIBezierPath!
+    
+    
+    
+    
+    @objc func panDetected(sender: UIPanGestureRecognizer){
         
+        if sender.state == .began{
+            if abs(distanceBetweenPoints(from: sender.location(in: self), to: dialContainerView.center) - progressDialView.bounds.width) < 20{
+                panActive = true
+            }
+        }
+        
+        if panActive{
+            let referencePoint = CGPoint.init(x: self.frame.width / 2, y: self.frame.width / 2)
+            let angleValue = angle(between: referencePoint, ending: sender.location(in: self))
+            print("Angle : \(angleValue)")
+            progressDialView.transform = (CGAffineTransform.identity).rotated(by: angleValue)
+        }
+        
+        if sender.state == .ended{
+            panActive = false
+        }
+    }
+    
+    func angle(between starting: CGPoint, ending: CGPoint) -> CGFloat {
+        let center = CGPoint(x: ending.x - starting.x, y: ending.y - starting.y)
+        let radians = atan2(center.y, center.x)
+        let degrees = radians * 180 / .pi
+        let adjustedDegrees = degrees + 90
+        return adjustedDegrees > 0 ? adjustedDegrees : 360 + degrees + 90
     }
     
     
-    @objc func proceedToDetail(sender: UIButton){
-        navigationDelegate?.moveForward()
+    func distanceSquared(from: CGPoint, to: CGPoint) -> CGFloat {
+        return (from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y)
+    }
+
+    func distanceBetweenPoints(from: CGPoint, to: CGPoint) -> CGFloat {
+        return sqrt(distanceSquared(from: from, to: to))
+    }
+    
+    private func degreesToRadians(_ deg: CGFloat) -> CGFloat {
+        return deg * CGFloat.pi / 180
+    }
+    
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        
+    }
     
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        initViews()
+    }
 }
 
 extension FirstView: StackViewDimensionProtocol{
@@ -62,3 +128,75 @@ extension FirstView: StackViewDimensionProtocol{
     }
 }
 
+
+
+extension FirstView{
+    
+    
+    func initViews(){
+        let headingLabel = UILabel()
+        self.addSubview(headingLabel)
+        headingLabel.text = "Hello SWAT, how much do you need?"
+        headingLabel.textColor = AppTheme.cardsControllertextColor
+        headingLabel.numberOfLines = 0
+        headingLabel.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
+        headingLabel.translatesAutoresizingMaskIntoConstraints = false
+        [headingLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20),
+         headingLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 30),
+         headingLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20)].forEach({$0.isActive = true})
+        
+        let instructionLabel = UILabel()
+        self.addSubview(instructionLabel)
+        instructionLabel.text = "move the dial and set the amount to any amount you need upto ₹7,00,000.00"
+        instructionLabel.textColor = AppTheme.textColor
+        instructionLabel.font = UIFont.systemFont(ofSize: 13, weight: .light)
+        instructionLabel.numberOfLines = 0
+        instructionLabel.translatesAutoresizingMaskIntoConstraints = false
+        [instructionLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20),
+         instructionLabel.topAnchor.constraint(equalTo: headingLabel.bottomAnchor, constant: 8),
+         instructionLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20)].forEach({$0.isActive = true})
+        
+        dialContainerView = BaseView.init(with: .white, circular: false, shadow: false, borderColor: nil, borderThickness: nil)
+        self.addSubview(dialContainerView)
+        dialContainerView.translatesAutoresizingMaskIntoConstraints = false
+        [dialContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
+         dialContainerView.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 20),
+         dialContainerView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -60),
+         dialContainerView.heightAnchor.constraint(equalTo: dialContainerView.widthAnchor, constant: 0)].forEach({$0.isActive = true})
+        
+        progressDialView = CircularProgressView.init(progress: 0.2, trackColor: progressTrackColor, progressColor: progressFillColor)
+        dialContainerView.addSubview(progressDialView)
+        progressDialView.translatesAutoresizingMaskIntoConstraints = false
+        [progressDialView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.25),
+         progressDialView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.25),
+         progressDialView.centerYAnchor.constraint(equalTo: dialContainerView.centerYAnchor, constant: 0),
+         progressDialView.centerXAnchor.constraint(equalTo: dialContainerView.centerXAnchor, constant: 0)].forEach({$0.isActive = true})
+        
+        panGesture = UIPanGestureRecognizer.init(target: self, action: #selector(panDetected(sender:)))
+        self.addGestureRecognizer(panGesture)
+        
+//        circularPath = UIBezierPath.init(arcCenter: self.center, radius: self.bounds.width, startAngle: 0, endAngle: CGFloat.pi, clockwise: true)
+//        circularShape.path = circularPath.cgPath
+//        self.layer.addSublayer(circularShape)
+    }
+}
+
+
+//extension CGPoint {
+//    func angle(to comparisonPoint: CGPoint) -> CGFloat {
+//        let originX = comparisonPoint.x - self.x
+//        let originY = comparisonPoint.y - self.y
+//        let bearingRadians = atan2f(Float(originY), Float(originX))
+//        var bearingDegrees = CGFloat(bearingRadians).degrees
+//        while bearingDegrees < 0 {
+//            bearingDegrees += 360
+//        }
+//        return bearingDegrees
+//    }
+//}
+//
+//extension CGFloat {
+//    var degrees: CGFloat {
+//        return self * CGFloat(180.0 / .pi)
+//    }
+//}

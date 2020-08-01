@@ -12,6 +12,7 @@ class BaseView: UIView{
     var roundedShape = CAShapeLayer()
     var curvedPath: UIBezierPath!
     var shapeColor: UIColor!
+    open var actualColor: UIColor!
     var circular: Bool!
     var shadow: Bool!
     var shadowLayer = CAShapeLayer()
@@ -23,6 +24,7 @@ class BaseView: UIView{
     public convenience init(with backgroundTheme: UIColor, circular: Bool, shadow: Bool,borderColor: UIColor?,borderThickness: Int?){
         self.init()
         shapeColor = backgroundTheme
+        actualColor = backgroundTheme
         self.circular = circular
         self.shadow = shadow
         self.borderThickness = CGFloat(borderThickness ?? 0)

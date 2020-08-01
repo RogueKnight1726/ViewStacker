@@ -47,7 +47,6 @@ class ThirdView: BaseView{
 
 extension ThirdView: StackViewDimensionProtocol{
     func recieveIncomingData(value: Any?) {
-        print("Recieved Data in Third View: \(value)")
     }
     
     func sendDataToNextView() -> Any? {

@@ -13,14 +13,15 @@ import StacksManager
 class SecondView: BaseView{
     
     weak var navigationDelegate: StackNavigationProtocol?
-    
     public var currentState: ViewState!{
         didSet{
             switch currentState {
             case .Dismissed:
+                print("Second View is Dismissed")
                 navigationDelegate?.dismissCurrentView()
                 break
             case .Visible:
+                print("Second View is Visible")
                 navigationDelegate?.moveForward()
                 break
             case .FullScreen:
@@ -28,17 +29,23 @@ class SecondView: BaseView{
             default:
                 break
             }
-            
         }
     }
+    
+    
+    
+    //App related properties
+    var headerView: UIView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         
     }
-    @objc func proceedToDetail(sender: UIButton){
-        navigationDelegate?.moveForward()
+    
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        initViews()
     }
     
     required init?(coder: NSCoder) {
@@ -52,7 +59,6 @@ class SecondView: BaseView{
 
 extension SecondView: StackViewDimensionProtocol{
     func recieveIncomingData(value: Any?) {
-        print("Recieved Data in Second View: \(value)")
     }
     
     func sendDataToNextView() -> Any? {
@@ -75,4 +81,15 @@ extension SecondView: StackViewDimensionProtocol{
     
     
     
+}
+
+
+extension SecondView{
+    
+    
+    func initViews(){
+        
+        
+        
+    }
 }
