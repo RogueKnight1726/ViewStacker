@@ -10,7 +10,7 @@
 		582B881224D6AB7E00A2E45C /* EmiDistributionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582B881124D6AB7E00A2E45C /* EmiDistributionCell.swift */; };
 		582B881524D6B60500A2E45C /* EMIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582B881424D6B60500A2E45C /* EMIModel.swift */; };
 		582B881724D6D17400A2E45C /* BaseImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582B881624D6D17400A2E45C /* BaseImageView.swift */; };
-		583B269924D47A7D004AA196 /* ThirdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583B269824D47A7D004AA196 /* ThirdView.swift */; };
+		583B269924D47A7D004AA196 /* BankDetailsSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583B269824D47A7D004AA196 /* BankDetailsSelectionView.swift */; };
 		583B271524D54A2E004AA196 /* StacksManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 583B270C24D54A2D004AA196 /* StacksManager.framework */; };
 		583B271C24D54A2E004AA196 /* StacksManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583B271B24D54A2E004AA196 /* StacksManagerTests.swift */; };
 		583B271E24D54A2E004AA196 /* StacksManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 583B270E24D54A2E004AA196 /* StacksManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -28,9 +28,9 @@
 		58BFB86224D441ED001DE405 /* ViewStackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BFB86124D441ED001DE405 /* ViewStackerUITests.swift */; };
 		58BFB87224D44222001DE405 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BFB87124D44222001DE405 /* HomeController.swift */; };
 		58BFB87424D44534001DE405 /* FirstController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BFB87324D44534001DE405 /* FirstController.swift */; };
-		58BFB87624D445AD001DE405 /* FirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BFB87524D445AD001DE405 /* FirstView.swift */; };
+		58BFB87624D445AD001DE405 /* StashAmountSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BFB87524D445AD001DE405 /* StashAmountSelectionView.swift */; };
 		58BFB87824D446EB001DE405 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BFB87724D446EB001DE405 /* BaseView.swift */; };
-		58BFB87A24D44B50001DE405 /* SecondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BFB87924D44B50001DE405 /* SecondView.swift */; };
+		58BFB87A24D44B50001DE405 /* EMISelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BFB87924D44B50001DE405 /* EMISelectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,7 +89,7 @@
 		582B881124D6AB7E00A2E45C /* EmiDistributionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmiDistributionCell.swift; sourceTree = "<group>"; };
 		582B881424D6B60500A2E45C /* EMIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EMIModel.swift; sourceTree = "<group>"; };
 		582B881624D6D17400A2E45C /* BaseImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseImageView.swift; sourceTree = "<group>"; };
-		583B269824D47A7D004AA196 /* ThirdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdView.swift; sourceTree = "<group>"; };
+		583B269824D47A7D004AA196 /* BankDetailsSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsSelectionView.swift; sourceTree = "<group>"; };
 		583B270C24D54A2D004AA196 /* StacksManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StacksManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		583B270E24D54A2E004AA196 /* StacksManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StacksManager.h; sourceTree = "<group>"; };
 		583B270F24D54A2E004AA196 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -99,7 +99,7 @@
 		583B272A24D54A52004AA196 /* StackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackManager.swift; sourceTree = "<group>"; };
 		583B272E24D58471004AA196 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		583B273024D5AAD8004AA196 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
-		58BFB83C24D441E9001DE405 /* ViewStacker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ViewStacker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		58BFB83C24D441E9001DE405 /* Stacks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stacks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		58BFB83F24D441E9001DE405 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		58BFB84124D441E9001DE405 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		58BFB84624D441E9001DE405 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -114,9 +114,9 @@
 		58BFB86324D441ED001DE405 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		58BFB87124D44222001DE405 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		58BFB87324D44534001DE405 /* FirstController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstController.swift; sourceTree = "<group>"; };
-		58BFB87524D445AD001DE405 /* FirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstView.swift; sourceTree = "<group>"; };
+		58BFB87524D445AD001DE405 /* StashAmountSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StashAmountSelectionView.swift; sourceTree = "<group>"; };
 		58BFB87724D446EB001DE405 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
-		58BFB87924D44B50001DE405 /* SecondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondView.swift; sourceTree = "<group>"; };
+		58BFB87924D44B50001DE405 /* EMISelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EMISelectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,7 +202,7 @@
 		58BFB83D24D441E9001DE405 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				58BFB83C24D441E9001DE405 /* ViewStacker.app */,
+				58BFB83C24D441E9001DE405 /* Stacks.app */,
 				58BFB85224D441ED001DE405 /* ViewStackerTests.xctest */,
 				58BFB85D24D441ED001DE405 /* ViewStackerUITests.xctest */,
 				583B270C24D54A2D004AA196 /* StacksManager.framework */,
@@ -249,9 +249,9 @@
 		58BFB86F24D44206001DE405 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				58BFB87524D445AD001DE405 /* FirstView.swift */,
-				58BFB87924D44B50001DE405 /* SecondView.swift */,
-				583B269824D47A7D004AA196 /* ThirdView.swift */,
+				58BFB87524D445AD001DE405 /* StashAmountSelectionView.swift */,
+				58BFB87924D44B50001DE405 /* EMISelectionView.swift */,
+				583B269824D47A7D004AA196 /* BankDetailsSelectionView.swift */,
 				58BFB87724D446EB001DE405 /* BaseView.swift */,
 				583B273024D5AAD8004AA196 /* CircularProgressView.swift */,
 				582B881124D6AB7E00A2E45C /* EmiDistributionCell.swift */,
@@ -336,7 +336,7 @@
 			);
 			name = ViewStacker;
 			productName = ViewStacker;
-			productReference = 58BFB83C24D441E9001DE405 /* ViewStacker.app */;
+			productReference = 58BFB83C24D441E9001DE405 /* Stacks.app */;
 			productType = "com.apple.product-type.application";
 		};
 		58BFB85124D441ED001DE405 /* ViewStackerTests */ = {
@@ -490,14 +490,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58BFB87A24D44B50001DE405 /* SecondView.swift in Sources */,
+				58BFB87A24D44B50001DE405 /* EMISelectionView.swift in Sources */,
 				58BFB87424D44534001DE405 /* FirstController.swift in Sources */,
 				583B272F24D58471004AA196 /* Utility.swift in Sources */,
-				58BFB87624D445AD001DE405 /* FirstView.swift in Sources */,
+				58BFB87624D445AD001DE405 /* StashAmountSelectionView.swift in Sources */,
 				58BFB84024D441E9001DE405 /* AppDelegate.swift in Sources */,
 				58BFB87824D446EB001DE405 /* BaseView.swift in Sources */,
 				58BFB84224D441E9001DE405 /* SceneDelegate.swift in Sources */,
-				583B269924D47A7D004AA196 /* ThirdView.swift in Sources */,
+				583B269924D47A7D004AA196 /* BankDetailsSelectionView.swift in Sources */,
 				582B881524D6B60500A2E45C /* EMIModel.swift in Sources */,
 				58BFB87224D44222001DE405 /* HomeController.swift in Sources */,
 				583B273124D5AAD8004AA196 /* CircularProgressView.swift in Sources */,
@@ -796,7 +796,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.nexteducation.mycollectionviewproject.ViewStacker;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Stacks;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -815,7 +815,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.nexteducation.mycollectionviewproject.ViewStacker;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Stacks;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

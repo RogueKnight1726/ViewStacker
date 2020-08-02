@@ -9,7 +9,7 @@
 import UIKit
 import StacksManager
 
-class ThirdView: BaseView{
+class BankDetailsSelectionView: BaseView{
     
     weak var navigationDelegate: StackNavigationProtocol?
     
@@ -152,7 +152,7 @@ class ThirdView: BaseView{
 
 
 
-extension ThirdView: StackViewDimensionProtocol{
+extension BankDetailsSelectionView: StackViewDataSource{
     func recieveIncomingData(value: Any?) {
     }
     

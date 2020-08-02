@@ -14,8 +14,7 @@ public class StackManager: UIView{
     var edgeSwipeGesture: UIScreenEdgePanGestureRecognizer!
     var dismissTapGesture: UITapGestureRecognizer!
     var swipeUpGesture: UIPanGestureRecognizer!
-    
-    var arrayOfViews: [StackViewDimensionProtocol]!{
+    var arrayOfViews: [StackViewDataSource]!{
         didSet{
             initiateGestureRecogniser()
         }
@@ -31,7 +30,9 @@ public class StackManager: UIView{
         super.init(coder: coder)
     }
     
-    public convenience init(frame: CGRect,viewStack: [StackViewDimensionProtocol],guide: UILayoutGuide) {
+    
+    /// REQUIRED : Use the below init to pass in the required params for StackManager to work
+    public convenience init(frame: CGRect,viewStack: [StackViewDataSource],guide: UILayoutGuide) {
         self.init()
         
         do{
@@ -41,7 +42,7 @@ public class StackManager: UIView{
         }
     }
     
-    func buildManager(frame: CGRect,viewStack: [StackViewDimensionProtocol],guide: UILayoutGuide) throws {
+    func buildManager(frame: CGRect,viewStack: [StackViewDataSource],guide: UILayoutGuide) throws {
         if viewStack.count < 2{
             throw ViewStackError.errorViewCount("View Stack needs at least 2 views")
         }
@@ -52,33 +53,6 @@ public class StackManager: UIView{
         initViews()
         initiateGestureRecogniser()
     }
-    
-    
-    
-    
-    func initViews(){
-        
-        self.transform = .identity
-        for item in arrayOfViews{
-            self.addSubview(item)
-            item.translatesAutoresizingMaskIntoConstraints = false
-            [item.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 0),
-            item.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: 0),
-            item.heightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, constant: 0),
-            item.topAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)].forEach({$0.isActive = true})
-            item.navigationDelegate = self
-            item.transform = .identity
-        }
-        
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: { [weak self] in
-            self?.arrayOfViews[0].transform = CGAffineTransform.init(translationX: 0, y: -(self?.guide.layoutFrame.height ?? 0))
-            self?.arrayOfViews[1].transform = CGAffineTransform.init(translationX: 0, y: -80)
-        }, completion: nil)
-        
-        
-    }
-    
-    
     
     func initiateGestureRecogniser(){
         edgeSwipeGesture = UIScreenEdgePanGestureRecognizer.init(target: self, action: #selector(edgeSwipeDetected(sender:)))
@@ -93,7 +67,6 @@ public class StackManager: UIView{
     
     
     @objc func dismissPresentedViews(sender: UITapGestureRecognizer){
-        
         let location = sender.location(in: self)
         for view in arrayOfViews.reversed(){
             if view.frame.contains(location){
@@ -113,17 +86,6 @@ public class StackManager: UIView{
                 return
             }
         }
-        
-        
-    }
-    
-    
-    public override func removeFromSuperview() {
-        super.removeFromSuperview()
-    }
-    
-    deinit {
-        print("StackManager deinit called")
     }
     
     @objc func edgeSwipeDetected(sender: UIPanGestureRecognizer){
@@ -142,6 +104,10 @@ public class StackManager: UIView{
         }
     }
     
+    /// This method can be called from any stack view to dimiss all the stacks at a time.
+    ///This can be called from any stack via the StackNavigationProtocol property.
+     
+    ///Example can be seen in Sample app's StashAmountSelectionView's initViews method. Uncomment the closeButton and target to see the functionality.
     public func dismissAllStacks(){
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.curveEaseOut,.curveEaseIn], animations: {
             self.transform = CGAffineTransform.init(translationX: 0, y: self.frame.height)
@@ -150,6 +116,35 @@ public class StackManager: UIView{
         }
     }
     
+    
+    
+    
+    
+    func initViews(){
+        self.transform = .identity
+        for item in arrayOfViews{
+            self.addSubview(item)
+            item.translatesAutoresizingMaskIntoConstraints = false
+            [item.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 0),
+            item.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: 0),
+            item.heightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, constant: 0),
+            item.topAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)].forEach({$0.isActive = true})
+            item.navigationDelegate = self
+            item.transform = .identity
+        }
+        
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: { [weak self] in
+            self?.arrayOfViews[0].transform = CGAffineTransform.init(translationX: 0, y: -(self?.guide.layoutFrame.height ?? 0))
+            self?.arrayOfViews[1].transform = CGAffineTransform.init(translationX: 0, y: -80)
+        }, completion: nil)
+    }
+    
+    deinit {
+        print("StackManager deinit called")
+    }
+    
+    
+    
     func performInitialAnimation(){
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
             self.arrayOfViews[0].transform = CGAffineTransform.init(translationX: 0, y: -self.guide.layoutFrame.height)
@@ -157,18 +152,22 @@ public class StackManager: UIView{
     }
 }
 
-public protocol StackViewDimensionProtocol: UIView{
+///REQUIRED DataSource protocol. All UIVIew objects that are passed to StackManager must confirm to this protocol
+public protocol StackViewDataSource: UIView{
+    ///state of item in Stack
     var state: ViewState { get set }
+    ///This is a required property to  add custom actions to move forward or backward in the stacks.
     var navigationDelegate: StackNavigationProtocol? { get set }
+    ///Required for StackManager to identify translation values of next view
     func heightOfHeaderView() -> CGFloat
+    ///Recieve a any values that is passed by the previous view in stack
     func recieveIncomingData(value: Any?)
+    ///Send any values to the next view in Stack
     func sendDataToNextView() -> Any?
-//    func heightOfView() -> CGFloat
 }
 
-
+///Custom navigation protocol
 public protocol StackNavigationProtocol: AnyObject{
-    
     func moveForward()
     func dismissCurrentView()
     func dismissStackManager()
@@ -189,6 +188,7 @@ extension StackManager: StackNavigationProtocol{
     }
     
     
+    /// Any time an action is performed to move to the succeeding view in the stack. Called from within the StackManager on the usual TapGesture
     public func moveForward() {
         let dataForNextView = arrayOfViews[currentScene].sendDataToNextView()
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: { [weak self] in
@@ -211,14 +211,12 @@ extension StackManager: StackNavigationProtocol{
         }
     }
     
+    ///Any time an action is performed to move back to the previous view in the stack. Called from within the StackManager on the Edge Swipe Gesture and Tap Gesture on previously visible views.
     public func dismissCurrentView() {
-        print("Current Scene : \(currentScene)")
-        
         if currentScene == 0{
             return
         }
         self.currentScene -= 1
-        
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: { [weak self] in
             guard let _ = self else { return }
             for i in (self!.currentScene + 1)...self!.arrayOfViews.count - 1{

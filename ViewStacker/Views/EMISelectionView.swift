@@ -10,7 +10,7 @@ import UIKit
 import StacksManager
 
 
-class SecondView: BaseView{
+class EMISelectionView: BaseView{
     
     weak var navigationDelegate: StackNavigationProtocol?
     public var currentState: ViewState!{
@@ -221,7 +221,7 @@ class SecondView: BaseView{
 }
 
 
-extension SecondView: UICollectionViewDataSource,UICollectionViewDelegate{
+extension EMISelectionView: UICollectionViewDataSource,UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return modelArray?.count ?? 0
     }
@@ -240,7 +240,7 @@ extension SecondView: UICollectionViewDataSource,UICollectionViewDelegate{
 
 
 
-extension SecondView: StackViewDimensionProtocol{
+extension EMISelectionView: StackViewDataSource{
     func recieveIncomingData(value: Any?) {
         if let valueArray = value as? [EMIModel]{
             self.modelArray = valueArray
@@ -270,7 +270,7 @@ extension SecondView: StackViewDimensionProtocol{
 }
 
 
-extension SecondView{
+extension EMISelectionView{
     
     
     func initViews(){

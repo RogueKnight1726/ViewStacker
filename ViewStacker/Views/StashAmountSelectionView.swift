@@ -10,7 +10,7 @@ import UIKit
 import StacksManager
 
 
-class FirstView: BaseView{
+class StashAmountSelectionView: BaseView{
     
     weak var navigationDelegate: StackNavigationProtocol?
     public var currentState: ViewState!{
@@ -135,7 +135,7 @@ class FirstView: BaseView{
     }
 }
 
-extension FirstView: StackViewDimensionProtocol{
+extension StashAmountSelectionView: StackViewDataSource{
     func recieveIncomingData(value: Any?) {
         
     }
@@ -164,7 +164,7 @@ extension FirstView: StackViewDimensionProtocol{
 
 
 
-extension FirstView{
+extension StashAmountSelectionView{
     
     
     func initViews(){
@@ -257,7 +257,7 @@ extension FirstView{
 
 
 
-extension FirstView: CircularProgressValueProtocol{
+extension StashAmountSelectionView: CircularProgressValueProtocol{
     func currentValueOfCircularProgressView(value: String) {
         creditValueLabel.text = value
     }
