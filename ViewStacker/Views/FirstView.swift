@@ -15,14 +15,25 @@ class FirstView: BaseView{
     weak var navigationDelegate: StackNavigationProtocol?
     public var currentState: ViewState!{
         didSet{
+            self.headingLabel.alpha = 1
+            self.instructionLabel.alpha = 1
+            creditAmountLabel.alpha = 1
+            creditValueLabel.alpha = 1
             switch currentState {
             case .Dismissed:
                 navigationDelegate?.dismissCurrentView()
+                creditAmountLabel.alpha = 0
+                creditValueLabel.alpha = 0
                 break
             case .Visible:
-                navigationDelegate?.moveForward()
+                creditAmountLabel.alpha = 0
+                creditValueLabel.alpha = 0
                 break
             case .FullScreen:
+                break
+            case .Background:
+                self.headingLabel.alpha = 0
+                self.instructionLabel.alpha = 0
                 break
             default:
                 break
@@ -42,6 +53,9 @@ class FirstView: BaseView{
     var panActive = false
     var startingAngle: CGFloat = 0.0
     let headingLabel = UILabel()
+    let instructionLabel = UILabel()
+    let creditAmountLabel = UILabel()
+    let creditValueLabel = UILabel()
     
     
     
@@ -56,18 +70,13 @@ class FirstView: BaseView{
         if panActive{
             let referencePoint = CGPoint.init(x: self.frame.width / 2, y: self.frame.width / 2)
             let angleValue = angle(between: referencePoint, ending: sender.location(in: self))
-            print("Angle : \(angleValue - startingAngle)")
             startingAngle = angleValue
             
             if angleValue > 350.0{
                 sender.state = .ended
             }
             progressDialView.progressValue = Float((angleValue / 350.0))
-//            var transform = CGAffineTransform.identity
-//            transform = transform.concatenating(CGAffineTransform.init(rotationAngle: angleValue))
-//            progressDialView.transform = transform
         }
-        
         if sender.state == .ended{
             panActive = false
         }
@@ -80,6 +89,8 @@ class FirstView: BaseView{
         let adjustedDegrees = degrees + 90
         return adjustedDegrees > 0 ? adjustedDegrees : 360 + degrees + 90
     }
+    
+   
     
     
     func distanceSquared(from: CGPoint, to: CGPoint) -> CGFloat {
@@ -126,7 +137,8 @@ extension FirstView: StackViewDimensionProtocol{
     }
     
     func sendDataToNextView() -> Any? {
-        return 30
+        
+        return [EMIModel.init(amountToBePaid: 8000, duration: 14, selected: true),EMIModel.init(amountToBePaid: 7000, duration: 18, selected: false),EMIModel.init(amountToBePaid: 5000, duration: 28, selected: false)]
     }
     
     
@@ -153,6 +165,22 @@ extension FirstView{
     
     func initViews(){
         
+        self.addSubview(creditAmountLabel)
+        creditAmountLabel.translatesAutoresizingMaskIntoConstraints = false
+        [creditAmountLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20),
+         creditAmountLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 30)].forEach({$0.isActive = true})
+        creditAmountLabel.text = "credit amount"
+        creditAmountLabel.textColor = AppTheme.cardsControllertextColor
+        creditAmountLabel.alpha = 0
+        
+        self.addSubview(creditValueLabel)
+        creditValueLabel.translatesAutoresizingMaskIntoConstraints = false
+        [creditValueLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20),
+         creditValueLabel.topAnchor.constraint(equalTo: creditAmountLabel.bottomAnchor, constant: 16)].forEach({$0.isActive = true})
+        creditValueLabel.textColor = AppTheme.cardsControllertextColor
+        creditValueLabel.alpha = 0
+        creditValueLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        
         self.addSubview(headingLabel)
         headingLabel.text = "Hello SWAT, how much do you need?"
         headingLabel.textColor = AppTheme.cardsControllertextColor
@@ -163,7 +191,7 @@ extension FirstView{
          headingLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 30),
          headingLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20)].forEach({$0.isActive = true})
         
-        let instructionLabel = UILabel()
+        
         self.addSubview(instructionLabel)
         instructionLabel.text = "move the dial and set the amount to any amount you need upto ₹7,00,000.00"
         instructionLabel.textColor = AppTheme.textColor
@@ -178,7 +206,7 @@ extension FirstView{
         self.addSubview(dialContainerView)
         dialContainerView.translatesAutoresizingMaskIntoConstraints = false
         [dialContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
-         dialContainerView.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 20),
+         dialContainerView.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 60),
          dialContainerView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -60),
          dialContainerView.heightAnchor.constraint(equalTo: dialContainerView.widthAnchor, constant: 0)].forEach({$0.isActive = true})
         
@@ -189,6 +217,7 @@ extension FirstView{
          progressDialView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.25),
          progressDialView.centerYAnchor.constraint(equalTo: dialContainerView.centerYAnchor, constant: 0),
          progressDialView.centerXAnchor.constraint(equalTo: dialContainerView.centerXAnchor, constant: 0)].forEach({$0.isActive = true})
+        progressDialView.delegate = self
         
         panGesture = UIPanGestureRecognizer.init(target: self, action: #selector(panDetected(sender:)))
         dialContainerView.addGestureRecognizer(panGesture)
@@ -204,29 +233,15 @@ extension FirstView{
         bottomDescriptionLabel.textColor = AppTheme.cardsControllertextColor
         bottomDescriptionLabel.textAlignment = .center
         bottomDescriptionLabel.text = "stash is instant. money will be credited within seconds"
-        
-//        circularPath = UIBezierPath.init(arcCenter: self.center, radius: self.bounds.width, startAngle: 0, endAngle: CGFloat.pi, clockwise: true)
-//        circularShape.path = circularPath.cgPath
-//        self.layer.addSublayer(circularShape)
     }
 }
 
 
-//extension CGPoint {
-//    func angle(to comparisonPoint: CGPoint) -> CGFloat {
-//        let originX = comparisonPoint.x - self.x
-//        let originY = comparisonPoint.y - self.y
-//        let bearingRadians = atan2f(Float(originY), Float(originX))
-//        var bearingDegrees = CGFloat(bearingRadians).degrees
-//        while bearingDegrees < 0 {
-//            bearingDegrees += 360
-//        }
-//        return bearingDegrees
-//    }
-//}
-//
-//extension CGFloat {
-//    var degrees: CGFloat {
-//        return self * CGFloat(180.0 / .pi)
-//    }
-//}
+
+extension FirstView: CircularProgressValueProtocol{
+    func currentValueOfCircularProgressView(value: String) {
+        creditValueLabel.text = value
+    }
+    
+    
+}

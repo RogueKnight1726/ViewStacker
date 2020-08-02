@@ -26,6 +26,7 @@ class CircularProgressView: UIView{
     var innerDialView: BaseView!
     var currentValue: Float = 0
     let numberFormatter = NumberFormatter()
+    weak var delegate: CircularProgressValueProtocol?
     var progressValue: Float?{
         didSet{
 //            if type == ProgressViewType.Percentage {
@@ -45,8 +46,10 @@ class CircularProgressView: UIView{
             numberFormatter.secondaryGroupingSize = 2
             if let amountValue = numberFormatter.string(from: NSNumber(value: decimalPlacesCorrectedvalue)){
                 creditValueLabel.text = "₹\(amountValue)"
+                delegate?.currentValueOfCircularProgressView(value: "₹\(amountValue)")
             } else {
                 creditValueLabel.text = "₹\(decimalPlacesCorrectedvalue)"
+                delegate?.currentValueOfCircularProgressView(value: "₹\(decimalPlacesCorrectedvalue)")
             }
         }
     }
@@ -136,4 +139,9 @@ class CircularProgressView: UIView{
         }
     }
     
+}
+
+
+protocol CircularProgressValueProtocol: AnyObject{
+    func currentValueOfCircularProgressView(value: String)
 }

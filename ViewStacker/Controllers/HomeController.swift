@@ -12,7 +12,7 @@ import StacksManager
 class HomeController: UIViewController{
     
     let productView = FirstView.init(with: UIColor(red: 0.07, green: 0.10, blue: 0.13, alpha: 1.00), circular: false, shadow: false, borderColor: nil, borderThickness: nil)
-    let detailView = SecondView.init(with: UIColor(red: 1.00, green: 0.20, blue: 0.40, alpha: 1.00), circular: false, shadow: false, borderColor: nil, borderThickness: nil)
+    let detailView = SecondView.init(with: UIColor(red: 0.09, green: 0.13, blue: 0.17, alpha: 1.00), circular: false, shadow: false, borderColor: nil, borderThickness: nil)
     let actionView = ThirdView.init(with: UIColor(red: 0.11, green: 0.15, blue: 0.19, alpha: 1.00), circular: false, shadow: false, borderColor: nil, borderThickness: nil)
     
     

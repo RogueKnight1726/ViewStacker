@@ -19,4 +19,10 @@ struct AppTheme{
     static let deSelectedColor = UIColor(red: 0.95, green: 0.71, blue: 0.62, alpha: 1.00)
     static let cardsControllertextColor = UIColor(red: 0.63, green: 0.65, blue: 0.66, alpha: 1.00)
     static let accentButtonColor = UIColor(red: 0.18, green: 0.31, blue: 0.59, alpha: 1.00)
+    static let emiOptionsViewLabelColor = UIColor(red: 0.53, green: 0.61, blue: 0.64, alpha: 1.00)
+    static let baseViewButtonBorderColor = UIColor(red: 0.51, green: 0.59, blue: 0.62, alpha: 1.00)
+    static let cellOneColor = UIColor(red:0.88, green:0.54, blue:0.53, alpha:1.0)
+    static let cellTwoColor = UIColor(red:0.31, green:0.29, blue:0.52, alpha:1.0)
+    static let cellThreeColor = UIColor(red:0.94, green:0.68, blue:0.44, alpha:1.0)
+    static let cellFourColor = UIColor(red:0.75, green:0.75, blue:0.82, alpha:1.0)
 }

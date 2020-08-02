@@ -69,6 +69,7 @@ public class StackManager: UIView{
         arrayOfViews[currentScene].addGestureRecognizer(edgeSwipeGesture)
         
         dismissTapGesture = UITapGestureRecognizer.init(target: self, action: #selector(dismissPresentedViews(sender:)))
+        dismissTapGesture.cancelsTouchesInView = false
         self.addGestureRecognizer(dismissTapGesture)
     }
     
@@ -171,6 +172,7 @@ extension StackManager: StackNavigationProtocol{
             for i in 0...self!.currentScene{
                 heightOffest = heightOffest + self!.arrayOfViews[i].heightOfHeaderView()
             }
+            self!.arrayOfViews[self!.currentScene].state = .Background
             self!.arrayOfViews[self!.currentScene + 1].transform = CGAffineTransform.init(translationX: 0, y: -(self!.guide.layoutFrame.height - heightOffest))
             if self!.arrayOfViews.indices.contains(self!.currentScene + 2){
                 self!.arrayOfViews[self!.currentScene + 2].transform = CGAffineTransform.init(translationX: 0, y: -80)
