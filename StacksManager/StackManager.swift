@@ -53,7 +53,7 @@ public class StackManager: UIView{
             item.transform = .identity
         }
         
-        UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: { [weak self] in
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: { [weak self] in
             self?.arrayOfViews[0].transform = CGAffineTransform.init(translationX: 0, y: -(self?.guide.layoutFrame.height ?? 0))
             self?.arrayOfViews[1].transform = CGAffineTransform.init(translationX: 0, y: -80)
         }, completion: nil)
@@ -123,7 +123,7 @@ public class StackManager: UIView{
     }
     
     func dismissStackManager(){
-        UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: {
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
             self.transform = CGAffineTransform.init(translationX: 0, y: self.frame.height)
         }) { (_) in
             self.removeFromSuperview()
@@ -131,7 +131,7 @@ public class StackManager: UIView{
     }
     
     func performInitialAnimation(){
-        UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
             self.arrayOfViews[0].transform = CGAffineTransform.init(translationX: 0, y: -self.guide.layoutFrame.height)
         }, completion: nil)
     }
@@ -156,6 +156,7 @@ public protocol StackNavigationProtocol: AnyObject{
 public enum ViewState{
     case Dismissed
     case Visible
+    case Background
     case FullScreen
 }
 
@@ -164,7 +165,7 @@ public enum ViewState{
 extension StackManager: StackNavigationProtocol{
     public func moveForward() {
         let dataForNextView = arrayOfViews[currentScene].sendDataToNextView()
-        UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: { [weak self] in
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: { [weak self] in
             guard let _ = self else { return }
             var heightOffest: CGFloat = 0
             for i in 0...self!.currentScene{
@@ -191,7 +192,7 @@ extension StackManager: StackNavigationProtocol{
         }
         self.currentScene -= 1
         
-        UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: { [weak self] in
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: { [weak self] in
             guard let _ = self else { return }
             for i in (self!.currentScene + 1)...self!.arrayOfViews.count - 1{
                 self!.arrayOfViews[i].transform  = .identity
@@ -199,18 +200,7 @@ extension StackManager: StackNavigationProtocol{
             self!.arrayOfViews[self!.currentScene + 1].transform = CGAffineTransform.init(translationX: 0, y: -80)
         }) { [weak self] (_) in
             guard let _ = self else { return }
-            if self!.currentScene >= 0{
-//                self!.currentScene -= 1
                 self!.arrayOfViews[self!.currentScene].addGestureRecognizer(self!.edgeSwipeGesture)
-            } else{
-
-                self!.arrayOfViews[max(self!.currentScene,0)].removeFromSuperview()
-                self!.removeFromSuperview()
-            }
         }
-        
-        
     }
-    
-    
 }
