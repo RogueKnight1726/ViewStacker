@@ -82,6 +82,86 @@ class EMISelectionView: BaseView{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        initViews()
+    }
+    
+    //This method is implemented to reduce the number of repeatations while randoming. It doesnt completely remove repeatation, but greatly reduces, and I'm happy with the output
+    func randomAndRemove()->UIColor{
+        if colorSet.isEmpty {
+            colorSet = [AppTheme.cellOneColor,AppTheme.cellTwoColor,AppTheme.cellThreeColor,AppTheme.cellFourColor]
+        }
+        let color = colorSet.randomElement()
+        colorSet.removeAll(where: { $0 == color })
+        return color!
+    }
+    
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    
+}
+
+
+extension EMISelectionView: UICollectionViewDataSource,UICollectionViewDelegate{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return modelArray?.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SomeIdentifier", for: indexPath) as! EmiDistributionCell
+        cell.backColor = colorSet[indexPath.row]
+        cell.model = modelArray?[indexPath.row]
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.selectedModel = modelArray?[indexPath.row]
+    }
+}
+
+
+
+extension EMISelectionView: StackViewDataSource{
+    func recieveIncomingData(value: Any?) {
+        if let valueArray = value as? [EMIModel]{
+            self.modelArray = valueArray
+        }
+    }
+    
+    func sendDataToNextView() -> Any? {
+        return 80
+    }
+    
+    var state: ViewState {
+        get {
+            return currentState
+        }
+        set {
+            self.currentState = newValue
+        }
+    }
+    
+    
+    func heightOfHeaderView() -> CGFloat {
+        return 100
+    }
+    
+    
+    
+}
+
+
+extension EMISelectionView{
+    
+    
+    func initViews(){
+        
         headerLabel = UILabel()
         self.addSubview(headerLabel)
         headerLabel.text = "Proceed to EMI selection"
@@ -195,87 +275,6 @@ class EMISelectionView: BaseView{
         createYourOwnPlanLabel.text = "Create your own plan"
         createYourOwnPlanLabel.textColor = AppTheme.baseViewButtonBorderColor
         createYourOwnPlanLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        
-    }
-    
-    //This method is implemented to reduce the number of repeatations while randoming. It doesnt completely remove repeatation, but greatly reduces, and I'm happy with the output
-    func randomAndRemove()->UIColor{
-        if colorSet.isEmpty {
-            colorSet = [AppTheme.cellOneColor,AppTheme.cellTwoColor,AppTheme.cellThreeColor,AppTheme.cellFourColor]
-        }
-        let color = colorSet.randomElement()
-        colorSet.removeAll(where: { $0 == color })
-        return color!
-    }
-    
-    override func didMoveToWindow() {
-        super.didMoveToWindow()
-        initViews()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    
-}
-
-
-extension EMISelectionView: UICollectionViewDataSource,UICollectionViewDelegate{
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return modelArray?.count ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SomeIdentifier", for: indexPath) as! EmiDistributionCell
-        cell.backColor = colorSet[indexPath.row]
-        cell.model = modelArray?[indexPath.row]
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.selectedModel = modelArray?[indexPath.row]
-    }
-}
-
-
-
-extension EMISelectionView: StackViewDataSource{
-    func recieveIncomingData(value: Any?) {
-        if let valueArray = value as? [EMIModel]{
-            self.modelArray = valueArray
-        }
-    }
-    
-    func sendDataToNextView() -> Any? {
-        return 80
-    }
-    
-    var state: ViewState {
-        get {
-            return currentState
-        }
-        set {
-            self.currentState = newValue
-        }
-    }
-    
-    
-    func heightOfHeaderView() -> CGFloat {
-        return 100
-    }
-    
-    
-    
-}
-
-
-extension EMISelectionView{
-    
-    
-    func initViews(){
-        
-        
         
     }
 }
