@@ -10,7 +10,6 @@
 		582B881224D6AB7E00A2E45C /* EmiDistributionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582B881124D6AB7E00A2E45C /* EmiDistributionCell.swift */; };
 		582B881524D6B60500A2E45C /* EMIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582B881424D6B60500A2E45C /* EMIModel.swift */; };
 		582B881724D6D17400A2E45C /* BaseImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582B881624D6D17400A2E45C /* BaseImageView.swift */; };
-		583B269324D45466004AA196 /* StackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583B269224D45466004AA196 /* StackManager.swift */; };
 		583B269924D47A7D004AA196 /* ThirdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583B269824D47A7D004AA196 /* ThirdView.swift */; };
 		583B271524D54A2E004AA196 /* StacksManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 583B270C24D54A2D004AA196 /* StacksManager.framework */; };
 		583B271C24D54A2E004AA196 /* StacksManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583B271B24D54A2E004AA196 /* StacksManagerTests.swift */; };
@@ -90,7 +89,6 @@
 		582B881124D6AB7E00A2E45C /* EmiDistributionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmiDistributionCell.swift; sourceTree = "<group>"; };
 		582B881424D6B60500A2E45C /* EMIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EMIModel.swift; sourceTree = "<group>"; };
 		582B881624D6D17400A2E45C /* BaseImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseImageView.swift; sourceTree = "<group>"; };
-		583B269224D45466004AA196 /* StackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackManager.swift; sourceTree = "<group>"; };
 		583B269824D47A7D004AA196 /* ThirdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdView.swift; sourceTree = "<group>"; };
 		583B270C24D54A2D004AA196 /* StacksManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StacksManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		583B270E24D54A2E004AA196 /* StacksManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StacksManager.h; sourceTree = "<group>"; };
@@ -218,7 +216,6 @@
 			children = (
 				58BFB83F24D441E9001DE405 /* AppDelegate.swift */,
 				58BFB84124D441E9001DE405 /* SceneDelegate.swift */,
-				583B269224D45466004AA196 /* StackManager.swift */,
 				583B272E24D58471004AA196 /* Utility.swift */,
 				582B881324D6B5F600A2E45C /* Models */,
 				58BFB86F24D44206001DE405 /* Views */,
@@ -500,7 +497,6 @@
 				58BFB84024D441E9001DE405 /* AppDelegate.swift in Sources */,
 				58BFB87824D446EB001DE405 /* BaseView.swift in Sources */,
 				58BFB84224D441E9001DE405 /* SceneDelegate.swift in Sources */,
-				583B269324D45466004AA196 /* StackManager.swift in Sources */,
 				583B269924D47A7D004AA196 /* ThirdView.swift in Sources */,
 				582B881524D6B60500A2E45C /* EMIModel.swift in Sources */,
 				58BFB87224D44222001DE405 /* HomeController.swift in Sources */,

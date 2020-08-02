@@ -15,25 +15,22 @@ class FirstView: BaseView{
     weak var navigationDelegate: StackNavigationProtocol?
     public var currentState: ViewState!{
         didSet{
-            self.headingLabel.alpha = 1
-            self.instructionLabel.alpha = 1
-            creditAmountLabel.alpha = 1
-            creditValueLabel.alpha = 1
+            self.headingLabel.alpha = 0
+            self.instructionLabel.alpha = 0
+            creditAmountLabel.alpha = 0
+            creditValueLabel.alpha = 0
             switch currentState {
             case .Dismissed:
-                navigationDelegate?.dismissCurrentView()
-                creditAmountLabel.alpha = 0
-                creditValueLabel.alpha = 0
                 break
             case .Visible:
-                creditAmountLabel.alpha = 0
-                creditValueLabel.alpha = 0
+                self.headingLabel.alpha = 1
+                self.instructionLabel.alpha = 1
                 break
             case .FullScreen:
                 break
             case .Background:
-                self.headingLabel.alpha = 0
-                self.instructionLabel.alpha = 0
+                creditAmountLabel.alpha = 1
+                creditValueLabel.alpha = 1
                 break
             default:
                 break
@@ -56,6 +53,7 @@ class FirstView: BaseView{
     let instructionLabel = UILabel()
     let creditAmountLabel = UILabel()
     let creditValueLabel = UILabel()
+    var closeButton: UIButton!
     
     
     
@@ -68,7 +66,7 @@ class FirstView: BaseView{
         }
         
         if panActive{
-            let referencePoint = CGPoint.init(x: self.frame.width / 2, y: self.frame.width / 2)
+            let referencePoint = CGPoint.init(x: self.frame.width / 2, y: self.frame.height / 2)
             let angleValue = angle(between: referencePoint, ending: sender.location(in: self))
             startingAngle = angleValue
             
@@ -81,6 +79,12 @@ class FirstView: BaseView{
             panActive = false
         }
     }
+    /* Target for dismissing the all stacks at a time.  Commented because I didn't find it to be a good UX.
+     
+    @objc func closeViewStack(sender: UIButton){
+        self.navigationDelegate?.dismissStackManager()
+    }
+    */
     
     func angle(between starting: CGPoint, ending: CGPoint) -> CGFloat {
         let center = CGPoint(x: ending.x - starting.x, y: ending.y - starting.y)
@@ -164,6 +168,21 @@ extension FirstView{
     
     
     func initViews(){
+        /* You may add buttons to dismiss the entire stacks.
+         
+         
+        closeButton = UIButton.init()
+        self.addSubview(closeButton)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        [closeButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20),
+         closeButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+         closeButton.widthAnchor.constraint(equalToConstant: 20),
+         closeButton.heightAnchor.constraint(equalToConstant: 20)].forEach({$0.isActive = true})
+        closeButton.setImage(UIImage.init(named: "closeButtonImage"), for: .normal)
+        closeButton.addTarget(self, action: #selector(closeViewStack(sender:)), for: .touchUpInside)
+        
+         
+         */
         
         self.addSubview(creditAmountLabel)
         creditAmountLabel.translatesAutoresizingMaskIntoConstraints = false

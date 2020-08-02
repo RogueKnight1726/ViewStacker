@@ -13,6 +13,7 @@ public class StackManager: UIView{
     
     var edgeSwipeGesture: UIScreenEdgePanGestureRecognizer!
     var dismissTapGesture: UITapGestureRecognizer!
+    var swipeUpGesture: UIPanGestureRecognizer!
     
     var arrayOfViews: [StackViewDimensionProtocol]!{
         didSet{
@@ -32,12 +33,28 @@ public class StackManager: UIView{
     
     public convenience init(frame: CGRect,viewStack: [StackViewDimensionProtocol],guide: UILayoutGuide) {
         self.init()
+        
+        do{
+            try buildManager(frame: frame,viewStack: viewStack,guide: guide)
+        } catch {
+            print("Error : \(error)")
+        }
+    }
+    
+    func buildManager(frame: CGRect,viewStack: [StackViewDimensionProtocol],guide: UILayoutGuide) throws {
+        if viewStack.count < 2{
+            throw ViewStackError.errorViewCount("View Stack needs at least 2 views")
+        }
         self.frame = frame
         self.guide = guide
         self.arrayOfViews = viewStack
+        self.arrayOfViews[0].state = .Visible
         initViews()
         initiateGestureRecogniser()
     }
+    
+    
+    
     
     func initViews(){
         
@@ -71,24 +88,25 @@ public class StackManager: UIView{
         dismissTapGesture = UITapGestureRecognizer.init(target: self, action: #selector(dismissPresentedViews(sender:)))
         dismissTapGesture.cancelsTouchesInView = false
         self.addGestureRecognizer(dismissTapGesture)
+        
     }
+    
     
     @objc func dismissPresentedViews(sender: UITapGestureRecognizer){
         
         let location = sender.location(in: self)
         for view in arrayOfViews.reversed(){
-            print("For loop called")
             if view.frame.contains(location){
                 guard let index = arrayOfViews.firstIndex(where: { $0 === view }) else { return }
-                print("Index initiated at \(index)")
                 if index > currentScene{
                     view.state = .Visible
+                    self.moveForward()
                     return
                 }
                 if index < currentScene{
                     for i in (index + 1)...arrayOfViews.count-1{
-                        print("Dismiss called for index \(index)")
                         arrayOfViews[i].state = .Dismissed
+                        self.dismissCurrentView()
                     }
                     return
                 }
@@ -116,15 +134,16 @@ public class StackManager: UIView{
         if sender.state == .ended{
             if dismissable{
                 if currentScene == 0{
-                 dismissStackManager()
+                 dismissAllStacks()
                 }
                 arrayOfViews[currentScene].state = .Dismissed
+                self.dismissCurrentView()
             }
         }
     }
     
-    func dismissStackManager(){
-        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+    public func dismissAllStacks(){
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.curveEaseOut,.curveEaseIn], animations: {
             self.transform = CGAffineTransform.init(translationX: 0, y: self.frame.height)
         }) { (_) in
             self.removeFromSuperview()
@@ -152,6 +171,7 @@ public protocol StackNavigationProtocol: AnyObject{
     
     func moveForward()
     func dismissCurrentView()
+    func dismissStackManager()
 }
 
 public enum ViewState{
@@ -164,6 +184,11 @@ public enum ViewState{
 
 
 extension StackManager: StackNavigationProtocol{
+    public func dismissStackManager() {
+        self.dismissAllStacks()
+    }
+    
+    
     public func moveForward() {
         let dataForNextView = arrayOfViews[currentScene].sendDataToNextView()
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: { [weak self] in
@@ -205,4 +230,9 @@ extension StackManager: StackNavigationProtocol{
                 self!.arrayOfViews[self!.currentScene].addGestureRecognizer(self!.edgeSwipeGesture)
         }
     }
+}
+
+
+enum ViewStackError: Error{
+    case errorViewCount(String)
 }

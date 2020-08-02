@@ -26,10 +26,10 @@ class SecondView: BaseView{
             switch currentState {
             case .Dismissed:
                 headerLabel.alpha = 1
-                navigationDelegate?.dismissCurrentView()
+//                navigationDelegate?.dismissCurrentView()
                 break
             case .Visible:
-                navigationDelegate?.moveForward()
+//                navigationDelegate?.moveForward()
                 repayOptionHeadingLabel.alpha = 1
                 repayDescriptionLabel.alpha = 1
                 break
@@ -63,6 +63,7 @@ class SecondView: BaseView{
             self.collectionView.reloadData()
             if !(modelArray?.isEmpty ?? true){
                 self.collectionView.selectItem(at: IndexPath.init(row: 0, section: 0), animated: true, scrollPosition: .left)
+                self.selectedModel = modelArray?[0]
             }
             
         }

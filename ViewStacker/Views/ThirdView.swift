@@ -20,11 +20,9 @@ class ThirdView: BaseView{
             dismissedHeadinglabel.alpha = 0
             switch currentState {
             case .Dismissed:
-                navigationDelegate?.dismissCurrentView()
                 dismissedHeadinglabel.alpha = 1
                 break
             case .Visible:
-                navigationDelegate?.moveForward()
                 headingLabel.alpha = 1
                 subTitleLabel.alpha = 1
                 break
@@ -169,7 +167,6 @@ extension ThirdView: StackViewDimensionProtocol{
         }
         set {
             self.currentState = newValue
-//            navigationDelegate?.dismissCurrentView()
         }
     }
     

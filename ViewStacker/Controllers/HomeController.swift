@@ -28,6 +28,7 @@ class HomeController: UIViewController{
         
         arrayOfScenes = [productView,detailView,actionView]
         
+        
         let button = UIButton.init()
         button.setTitle("Start", for: .normal)
         view.addSubview(button)

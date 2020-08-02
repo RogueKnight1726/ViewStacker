@@ -117,12 +117,16 @@ class CircularProgressView: UIView{
                                       radius: (frame.size.width), startAngle: CGFloat(-0.5 * Double.pi),
                                       endAngle: CGFloat(1.5 * Double.pi), clockwise: true)
         
-        tracklayer.path = circlePath.cgPath
-        tracklayer.fillColor = UIColor.clear.cgColor
-        tracklayer.strokeColor = trackColor
-        tracklayer.lineWidth = 12
-        tracklayer.strokeStart = 0
-        tracklayer.strokeEnd = 1.0
+        let innerCircle = UIBezierPath(arcCenter: CGPoint(x: frame.size.width / 2.0, y: frame.size.height / 2.0), radius: (frame.size.width - 8), startAngle: CGFloat(-0.5 * Double.pi), endAngle: CGFloat(1.5 * Double.pi), clockwise: true)
+        let outerCircle = UIBezierPath(arcCenter: CGPoint(x: frame.size.width / 2.0, y: frame.size.height / 2.0), radius: (frame.size.width + 8), startAngle: CGFloat(-0.5 * Double.pi), endAngle: CGFloat(1.5 * Double.pi), clockwise: true)
+        
+        outerCircle.append(innerCircle.reversing())
+        tracklayer.path = outerCircle.cgPath
+        tracklayer.fillColor = UIColor(red: 0.85, green: 0.88, blue: 0.92, alpha: 0.3).cgColor
+//        tracklayer.strokeColor = trackColor
+//        tracklayer.lineWidth = 12
+//        tracklayer.strokeStart = 0
+//        tracklayer.strokeEnd = 1.0
         layer.addSublayer(tracklayer)
         
         progressLayer.path = circlePath.cgPath
