@@ -41,7 +41,7 @@ public class StackManager: UIView{
     
     func initViews(){
         
-        
+        self.transform = .identity
         for item in arrayOfViews{
             self.addSubview(item)
             item.translatesAutoresizingMaskIntoConstraints = false
@@ -50,6 +50,7 @@ public class StackManager: UIView{
             item.heightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, constant: 0),
             item.topAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)].forEach({$0.isActive = true})
             item.navigationDelegate = self
+            item.transform = .identity
         }
         
         UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: { [weak self] in
@@ -72,22 +73,28 @@ public class StackManager: UIView{
     }
     
     @objc func dismissPresentedViews(sender: UITapGestureRecognizer){
-        print("Tap Detected")
         
         let location = sender.location(in: self)
         for view in arrayOfViews.reversed(){
+            print("For loop called")
             if view.frame.contains(location){
                 guard let index = arrayOfViews.firstIndex(where: { $0 === view }) else { return }
+                print("Index initiated at \(index)")
                 if index > currentScene{
                     view.state = .Visible
                     return
                 }
-                if index != currentScene{
-                    view.state = .Dismissed
+                if index < currentScene{
+                    for i in (index + 1)...arrayOfViews.count-1{
+                        print("Dismiss called for index \(index)")
+                        arrayOfViews[i].state = .Dismissed
+                    }
+                    return
                 }
                 return
             }
         }
+        
         
     }
     
@@ -101,15 +108,25 @@ public class StackManager: UIView{
     }
     
     @objc func edgeSwipeDetected(sender: UIPanGestureRecognizer){
-        print("Recieving Gesture")
         var dismissable = false
         if sender.translation(in: sender.view).x < -100 {
             dismissable = true
         }
         if sender.state == .ended{
             if dismissable{
+                if currentScene == 0{
+                 dismissStackManager()
+                }
                 arrayOfViews[currentScene].state = .Dismissed
             }
+        }
+    }
+    
+    func dismissStackManager(){
+        UIView.animate(withDuration: 0.2, delay: 0, options: [], animations: {
+            self.transform = CGAffineTransform.init(translationX: 0, y: self.frame.height)
+        }) { (_) in
+            self.removeFromSuperview()
         }
     }
     
@@ -153,7 +170,6 @@ extension StackManager: StackNavigationProtocol{
             for i in 0...self!.currentScene{
                 heightOffest = heightOffest + self!.arrayOfViews[i].heightOfHeaderView()
             }
-            print("height offset : \(heightOffest)")
             self!.arrayOfViews[self!.currentScene + 1].transform = CGAffineTransform.init(translationX: 0, y: -(self!.guide.layoutFrame.height - heightOffest))
             if self!.arrayOfViews.indices.contains(self!.currentScene + 2){
                 self!.arrayOfViews[self!.currentScene + 2].transform = CGAffineTransform.init(translationX: 0, y: -80)
@@ -168,21 +184,27 @@ extension StackManager: StackNavigationProtocol{
     }
     
     public func dismissCurrentView() {
+        print("Current Scene : \(currentScene)")
+        
+        if currentScene == 0{
+            return
+        }
+        self.currentScene -= 1
         
         UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: { [weak self] in
             guard let _ = self else { return }
-            for i in self!.currentScene...self!.arrayOfViews.count - 1{
+            for i in (self!.currentScene + 1)...self!.arrayOfViews.count - 1{
                 self!.arrayOfViews[i].transform  = .identity
             }
-            self!.arrayOfViews[self!.currentScene].transform = CGAffineTransform.init(translationX: 0, y: -80)
+            self!.arrayOfViews[self!.currentScene + 1].transform = CGAffineTransform.init(translationX: 0, y: -80)
         }) { [weak self] (_) in
             guard let _ = self else { return }
-            if self!.currentScene > 0{
-                self!.currentScene -= 1
+            if self!.currentScene >= 0{
+//                self!.currentScene -= 1
                 self!.arrayOfViews[self!.currentScene].addGestureRecognizer(self!.edgeSwipeGesture)
             } else{
-                
-                self!.arrayOfViews[self!.currentScene].removeFromSuperview()
+
+                self!.arrayOfViews[max(self!.currentScene,0)].removeFromSuperview()
                 self!.removeFromSuperview()
             }
         }

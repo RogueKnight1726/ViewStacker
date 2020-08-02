@@ -20,24 +20,34 @@ class CircularProgressView: UIView{
     
     
     
-    
-    var knobView = UIView()
-    var innerDialView = UIView()
-    var label = UILabel()
-    var seperationView = UIView()
-    var totalvalueLabel = UILabel()
+    var maximumCreditValue: Float = 700000
+    var creditLabel: UILabel!
+    var creditValueLabel: UILabel!
+    var innerDialView: BaseView!
+    var currentValue: Float = 0
+    let numberFormatter = NumberFormatter()
     var progressValue: Float?{
         didSet{
 //            if type == ProgressViewType.Percentage {
             let initialAnimation                   = CABasicAnimation(keyPath: "strokeEnd")
-            initialAnimation.fromValue             = 0
+            initialAnimation.fromValue             = currentValue
             initialAnimation.toValue               = progressValue ?? 0
             initialAnimation.beginTime             = 0
-            initialAnimation.duration              = 0.2
+            initialAnimation.duration              = 0
             initialAnimation.fillMode              = CAMediaTimingFillMode.both
             initialAnimation.isRemovedOnCompletion = false
-            
+            currentValue = progressValue ?? 0
             progressLayer.add(initialAnimation, forKey: "creditAmountValue")
+            let topLimit = min(maximumCreditValue, maximumCreditValue * (progressValue ?? 0))
+            let decimalPlacesCorrectedvalue = Int(topLimit)
+            numberFormatter.numberStyle = .decimal
+            numberFormatter.groupingSize = 3
+            numberFormatter.secondaryGroupingSize = 2
+            if let amountValue = numberFormatter.string(from: NSNumber(value: decimalPlacesCorrectedvalue)){
+                creditValueLabel.text = "₹\(amountValue)"
+            } else {
+                creditValueLabel.text = "₹\(decimalPlacesCorrectedvalue)"
+            }
         }
     }
     
@@ -47,26 +57,41 @@ class CircularProgressView: UIView{
         createCircularPath()
         
         innerDialView.translatesAutoresizingMaskIntoConstraints = false
-        [innerDialView.heightAnchor.constraint(equalToConstant: frame.size.width),
-        innerDialView.widthAnchor.constraint(equalToConstant: frame.size.width),
+        [innerDialView.heightAnchor.constraint(equalToConstant: frame.size.width * 3 / 2),
+        innerDialView.widthAnchor.constraint(equalToConstant: frame.size.width * 3 / 2),
         innerDialView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0),
         innerDialView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)].forEach({$0.isActive = true})
-        innerDialView.backgroundColor = .blue
         
-        knobView.translatesAutoresizingMaskIntoConstraints = false
-        [knobView.heightAnchor.constraint(equalToConstant: 20),
-         knobView.widthAnchor.constraint(equalToConstant: 20),
-         knobView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -frame.size.width),
-         knobView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)].forEach({$0.isActive = true})
+        creditLabel.translatesAutoresizingMaskIntoConstraints = false
+        [creditLabel.centerXAnchor.constraint(equalTo: innerDialView.centerXAnchor, constant: 0),
+         creditLabel.bottomAnchor.constraint(equalTo: innerDialView.centerYAnchor, constant: -10)].forEach({$0.isActive = true})
+        
+        creditValueLabel.translatesAutoresizingMaskIntoConstraints = false
+        [creditValueLabel.leftAnchor.constraint(equalTo: innerDialView.leftAnchor, constant: 10),
+         creditValueLabel.rightAnchor.constraint(equalTo: innerDialView.rightAnchor, constant: -10),
+         creditValueLabel.topAnchor.constraint(equalTo: innerDialView.centerYAnchor, constant: 10)].forEach({$0.isActive = true})
+        
         self.bringSubviewToFront(innerDialView)
         
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        innerDialView = BaseView.init(with: .white, circular: true, shadow: false, borderColor: UIColor(red: 1.00, green: 0.92, blue: 0.88, alpha: 1.00), borderThickness: 1)
         self.addSubview(innerDialView)
-        innerDialView.addSubview(knobView)
-        knobView.backgroundColor = .purple
+        creditLabel = UILabel()
+        creditLabel.text = "credit amount"
+        creditLabel.textColor = AppTheme.textColor
+        creditLabel.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        innerDialView.addSubview(creditLabel)
+        
+        creditValueLabel = UILabel()
+        creditValueLabel.text = "1,00,00,000"
+        creditValueLabel.textColor = .darkGray
+        creditValueLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        creditValueLabel.textAlignment = .center
+        innerDialView.addSubview(creditValueLabel)
+
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -102,11 +127,12 @@ class CircularProgressView: UIView{
         progressLayer.strokeColor = progressColor
         progressLayer.lineWidth = 12
         progressLayer.strokeEnd = 0
+        progressLayer.lineCap = .round
         progressLayer.strokeStart = 0.0
         layer.addSublayer(progressLayer)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.progressValue = 0.5
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.progressValue = 0.1
         }
     }
     

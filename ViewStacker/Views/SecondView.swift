@@ -15,13 +15,14 @@ class SecondView: BaseView{
     weak var navigationDelegate: StackNavigationProtocol?
     public var currentState: ViewState!{
         didSet{
+            headerLabel.alpha = 0
             switch currentState {
             case .Dismissed:
-                print("Second View is Dismissed")
+                
+                headerLabel.alpha = 1
                 navigationDelegate?.dismissCurrentView()
                 break
             case .Visible:
-                print("Second View is Visible")
                 navigationDelegate?.moveForward()
                 break
             case .FullScreen:
@@ -35,11 +36,19 @@ class SecondView: BaseView{
     
     
     //App related properties
-    var headerView: UIView!
+    var headerLabel: UILabel!
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        headerLabel = UILabel()
+        self.addSubview(headerLabel)
+        headerLabel.text = "Proceed to EMI selection"
+        headerLabel.textColor = .white
+        headerLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        [headerLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 14),
+         headerLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)].forEach({$0.isActive = true})
         
     }
     

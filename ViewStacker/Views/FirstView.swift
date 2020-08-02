@@ -15,7 +15,18 @@ class FirstView: BaseView{
     weak var navigationDelegate: StackNavigationProtocol?
     public var currentState: ViewState!{
         didSet{
-            navigationDelegate?.dismissCurrentView()
+            switch currentState {
+            case .Dismissed:
+                navigationDelegate?.dismissCurrentView()
+                break
+            case .Visible:
+                navigationDelegate?.moveForward()
+                break
+            case .FullScreen:
+                break
+            default:
+                break
+            }
         }
     }
     
@@ -29,10 +40,8 @@ class FirstView: BaseView{
     let progressFillColor = UIColor(red: 0.88, green: 0.58, blue: 0.45, alpha: 1.00)
     var panGesture: UIPanGestureRecognizer!
     var panActive = false
-//    private var currentRotation: Rotation = .none
-//    var circularShape = CAShapeLayer()
-//    var circularPath: UIBezierPath!
-    
+    var startingAngle: CGFloat = 0.0
+    let headingLabel = UILabel()
     
     
     
@@ -47,8 +56,16 @@ class FirstView: BaseView{
         if panActive{
             let referencePoint = CGPoint.init(x: self.frame.width / 2, y: self.frame.width / 2)
             let angleValue = angle(between: referencePoint, ending: sender.location(in: self))
-            print("Angle : \(angleValue)")
-            progressDialView.transform = (CGAffineTransform.identity).rotated(by: angleValue)
+            print("Angle : \(angleValue - startingAngle)")
+            startingAngle = angleValue
+            
+            if angleValue > 350.0{
+                sender.state = .ended
+            }
+            progressDialView.progressValue = Float((angleValue / 350.0))
+//            var transform = CGAffineTransform.identity
+//            transform = transform.concatenating(CGAffineTransform.init(rotationAngle: angleValue))
+//            progressDialView.transform = transform
         }
         
         if sender.state == .ended{
@@ -98,6 +115,7 @@ class FirstView: BaseView{
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        if self.subviews.contains(headingLabel) { return }
         initViews()
     }
 }
@@ -134,7 +152,7 @@ extension FirstView{
     
     
     func initViews(){
-        let headingLabel = UILabel()
+        
         self.addSubview(headingLabel)
         headingLabel.text = "Hello SWAT, how much do you need?"
         headingLabel.textColor = AppTheme.cardsControllertextColor
@@ -173,7 +191,19 @@ extension FirstView{
          progressDialView.centerXAnchor.constraint(equalTo: dialContainerView.centerXAnchor, constant: 0)].forEach({$0.isActive = true})
         
         panGesture = UIPanGestureRecognizer.init(target: self, action: #selector(panDetected(sender:)))
-        self.addGestureRecognizer(panGesture)
+        dialContainerView.addGestureRecognizer(panGesture)
+        
+        let bottomDescriptionLabel = UILabel()
+        dialContainerView.addSubview(bottomDescriptionLabel)
+        bottomDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        [bottomDescriptionLabel.leftAnchor.constraint(equalTo: dialContainerView.leftAnchor, constant: 20),
+         bottomDescriptionLabel.rightAnchor.constraint(equalTo: dialContainerView.rightAnchor, constant: -20),
+         bottomDescriptionLabel.bottomAnchor.constraint(equalTo: dialContainerView.bottomAnchor, constant: -20)].forEach({$0.isActive = true})
+        bottomDescriptionLabel.numberOfLines = 3
+        bottomDescriptionLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        bottomDescriptionLabel.textColor = AppTheme.cardsControllertextColor
+        bottomDescriptionLabel.textAlignment = .center
+        bottomDescriptionLabel.text = "stash is instant. money will be credited within seconds"
         
 //        circularPath = UIBezierPath.init(arcCenter: self.center, radius: self.bounds.width, startAngle: 0, endAngle: CGFloat.pi, clockwise: true)
 //        circularShape.path = circularPath.cgPath
