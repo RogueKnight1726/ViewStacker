@@ -4,6 +4,8 @@
 
 StacksManager framework works on an array of UIView objects stacked one over the other to provide a user friendly navigation over features that require multiple views to be presented in a sequential order. Each view is presented or dismissed according to the user actions.
 
+IMPORTANT: Each view used in the stack must confirm to StackViewDataSource protocol.
+
 There are two inbuilt user actions in this framework:
 
 TapGesture : The user may tap on the next view, shown at the bottom of the screen, to move to that view. The user may tap on any other previously presented view to go back to that view. Tapping on current view will have no effect. Tapping while in the first view will not dismiss the entire stack.
